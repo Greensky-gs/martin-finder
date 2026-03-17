@@ -21,7 +21,7 @@ SIZE_T cstring_length(cstring string) {
 SIZE_T cstring_max(cstring string) {
 	return *(string - 2 * sizeof(SIZE_T));
 }
-int cstring_free(cstring string) {
+void cstring_free(cstring string) {
 	free(string - sizeof(SIZE_T) * 2);
 }
 

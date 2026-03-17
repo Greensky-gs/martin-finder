@@ -6,7 +6,7 @@
 
 #define MAX_LINE_SIZE 2048
 
-Word create_word(SIZE_T a, SIZE_T b) {
+Word create_word(SIZE_T a, SIZE_T b, WordType type, WordGenre genre) {
 	Word word;
 	if ((word = malloc(sizeof(struct WordEntry))) == NULL) return NULL;
 
@@ -19,6 +19,8 @@ Word create_word(SIZE_T a, SIZE_T b) {
 		free(word);
 		return NULL;
 	}
+	word->type = type;
+	word->genre = genre;
 
 	return word;
 }
@@ -42,6 +44,23 @@ static char * slice_to_next(char * str) {
 
 	while (str[i] == '	') i++;
 	return str + i;
+}
+
+static int streq(char * a, char * b) {
+	int i = 0;
+	while (a[i] != 0 && b[i] != 0) {
+		if (a[i] != b[i]) return 0;
+		i++;
+	}
+
+	return a[i] == b[i];
+}
+
+static WordType detect_word_type(char * input) {
+	if (streq(input, "NOM")) return WordName;
+	if (streq(input, "VER")) return WordVer;
+	if (streq(input, "ADJ")) return WordAdj;	
+	return WordUnknown;
 }
 
 unsigned long int build_array(const char * file_path, Word  ** p, int filter(char *)) {
@@ -80,16 +99,32 @@ unsigned long int build_array(const char * file_path, Word  ** p, int filter(cha
 
 		char * phono = slice_to_next(buffer);
 		char * name = buffer;
+		char * typestr = buffer;
+		char * genrestr = buffer;
 
+		int repeatst = 0;
+		while (repeatst < 4) {
+			typestr = slice_to_next(typestr);
+			repeatst++;
+		}
+		int repeatsg = 0;
+		while (repeatsg < 6) {
+			genrestr = slice_to_next(genrestr);
+			repeatsg++;
+		}
+
+		put_null_atfs(typestr);
+		put_null_atfs(genrestr);
 		put_null_atfs(phono);
 		put_null_atfs(name);
 
 		if (!filter(phono)) continue;
 
+
 		int a = strlen(name);
 		int b = strlen(phono);
 
-		if (((*p)[index] = create_word(a, b)) == NULL) {
+		if (((*p)[index] = create_word(a, b, detect_word_type(typestr), genrestr[0] == 'f' ? WordFem : WordMasc)) == NULL) {
 			printf("Error with index %ld, skipping\n", index);
 			index++;
 			continue;

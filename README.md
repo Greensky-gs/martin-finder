@@ -6,6 +6,8 @@ A dumb C script to create word gimmicks with Martin Strecker
 
 Data goten from [lexique.org](http://www.lexique.org/) ( [http://www.lexique.org/databases/Lexique400/Lexique400.zip](http://www.lexique.org/databases/Lexique400/Lexique400.zip) ), thanks
 
-## Developement
+## Usage
 
-It is still in developpement, feel free to help :)
+1. Clone ( `git clone https://github.com/Greensky-gs/martin-finder` )
+2. Compile ( `make full -s` with make )
+3. Reuse by executing `./build/main`

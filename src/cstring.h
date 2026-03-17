@@ -8,7 +8,7 @@ typedef char * cstring;
 cstring cstring_create(SIZE_T);
 SIZE_T cstring_length(cstring);
 SIZE_T cstring_max(cstring);
-int cstring_free(cstring);
+void cstring_free(cstring);
 SIZE_T cstring_fill(cstring, char *);
 
 char cstring_reverse(cstring, SIZE_T);

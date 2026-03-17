@@ -2,7 +2,7 @@ CC=gcc
 FLAGS=-Wall -Wextra
 SANTS=-fsanitize=address,undefined -g
 
-OUTPUT=main.uwu
+OUTPUT=main
 
 SRC_DIR=src
 BUILD_DIR=build

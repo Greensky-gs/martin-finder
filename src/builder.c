@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "builder.h"
 #include <stdlib.h>
+#include "utils.h"
 
 #define MAX_LINE_SIZE 2048
 
@@ -44,16 +45,6 @@ static char * slice_to_next(char * str) {
 
 	while (str[i] == '	') i++;
 	return str + i;
-}
-
-static int streq(char * a, char * b) {
-	int i = 0;
-	while (a[i] != 0 && b[i] != 0) {
-		if (a[i] != b[i]) return 0;
-		i++;
-	}
-
-	return a[i] == b[i];
 }
 
 static WordType detect_word_type(char * input) {

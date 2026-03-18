@@ -1,6 +1,6 @@
 CC=gcc
 FLAGS=-Wall -Wextra
-SANTS=-fsanitize=address,undefined -g
+#SANTS=-fsanitize=address,undefined -g
 
 OUTPUT=main
 

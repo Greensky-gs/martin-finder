@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "utils.h"
+#include "args.h"
 
 #if _WIN32
 	#include <Windows.h>
@@ -20,14 +21,6 @@ void wait_seconds(int seconds) {
 	#endif
 }
 
-int in_args(int argc, char * argv[], char * target) {
-	int i = 1;
-	while (i < argc) {
-		if (streq(target, argv[i])) return 1;
-		i++;
-	}
-	return 0;
-}
 
 int filter(char * a) {
 	int i = 0;
@@ -48,7 +41,6 @@ static void generate(unsigned long int size, Word * tab) {
 	cstring_free(selection);
 }
 int main(int argc, char * argv[]) {
-	srand(time(NULL));
 	Word * tab;
 	unsigned long int size = build_array("Lexique4.tsv", &tab, &filter);
 
@@ -58,9 +50,15 @@ int main(int argc, char * argv[]) {
 	}
 
 	if (in_args(argc, argv, "-i") || in_args(argc, argv, "--infinite")) {
+		int delay = 2;
+		if (arg_int(argc, argv, "-d", &delay) != 1) arg_int(argc, argv, "--delay", &delay);
+
+		long int i = 0;
 		while (1) {
+			printf("%ld ", i);
+			i++;
 			generate(size, tab);
-			wait_seconds(2);
+			wait_seconds(delay);
 		}
 	} else {
 		generate(size, tab);

@@ -1,5 +1,6 @@
 #include "cstring.h"
 #include "builder.h"
+#include "utils.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,7 +28,7 @@ static cstring random_name(WordGenre genre, cstring mot, int il) {
 
 	char * end = " : Martin ";
 
-	int totalsize = strlen(start) + 2 * strlen(mot) + strlen(end);
+	int totalsize = strsize(start) + 2 * strsize(mot) + strsize(end);
 	cstring string;
 	if ((string = cstring_create(totalsize)) == NULL) return NULL;
 
@@ -52,15 +53,14 @@ static cstring random_verbe(WordGenre genre, cstring mot, int il) {
 		"il est en train de ",
 		"il ne peut pas s'empecher de ",
 		"il ne fait que ",
-		"il ne pense qu'a "
 	};
 
-	int randint = random_number(0, il ? 4 : 4);
+	int randint = random_number(0, il ? 3 : 4);
 	char * start = (il ? bank_il : bank_tu)[randint];
 
 	char * end = " : Martin ";
-
-	int totalsize = strlen(start) + 2 * strlen(mot) + strlen(end);
+	
+	int totalsize = strsize(start) + 2 * cstring_length(mot) + strsize(end);
 	cstring string;
 	if ((string = cstring_create(totalsize)) == NULL) return NULL;
 
@@ -93,7 +93,7 @@ static cstring random_adj(WordGenre genre, cstring mot, int il) {
 
 	char * end = " : Martin ";
 
-	int totalsize = strlen(start) + 2 * strlen(mot) + strlen(end);
+	int totalsize = strsize(start) + 2 * strsize(mot) + strsize(end);
 	cstring string;
 	if ((string = cstring_create(totalsize)) == NULL) return NULL;
 
@@ -118,6 +118,7 @@ cstring random_start(WordGenre genre, WordType type, cstring mot, int il) {
 	cstring start;
 	switch (type) {
 		case WordVer:
+			printf("genre = %d, mot = %s, il = %d\n", genre, mot, il);
 			start = random_verbe(genre, mot, il);
 			break;
 		case WordAdj:
@@ -133,7 +134,7 @@ cstring random_start(WordGenre genre, WordType type, cstring mot, int il) {
 	int randint = random_number(0, 2);
 	char * joiner = joiners[randint];
 
-	int totalsize = strlen(joiner) + cstring_length(start);
+	int totalsize = strsize(joiner) + cstring_length(start);
 
 	cstring result;
 	if ((result = cstring_create(totalsize)) == NULL) {
@@ -159,7 +160,7 @@ cstring random_sentence(Word word) {
 
 	char * entry = il ? "Il est prof de philo des sciences " : "Tu es prof de philo des sciences ";
 
-	int totalsize = strlen(entry) + cstring_length(start);
+	int totalsize = strsize(entry) + cstring_length(start);
 	cstring total;
 	if ((total = cstring_create(totalsize)) == NULL) {
 		cstring_free(start);

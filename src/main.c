@@ -41,6 +41,7 @@ static void generate(unsigned long int size, Word * tab) {
 	cstring_free(selection);
 }
 int main(int argc, char * argv[]) {
+	srand(time(NULL));
 	Word * tab;
 	unsigned long int size = build_array("Lexique4.tsv", &tab, &filter);
 
@@ -53,10 +54,7 @@ int main(int argc, char * argv[]) {
 		int delay = 2;
 		if (arg_int(argc, argv, "-d", &delay) != 1) arg_int(argc, argv, "--delay", &delay);
 
-		long int i = 0;
 		while (1) {
-			printf("%ld ", i);
-			i++;
 			generate(size, tab);
 			wait_seconds(delay);
 		}
